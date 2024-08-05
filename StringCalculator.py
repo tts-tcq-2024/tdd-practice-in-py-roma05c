@@ -1,35 +1,30 @@
-def number_split(num):
-    if(len(num) == 1):
-        return list(num)
-    if(num.startswith("//")):
-        num = num.replace("//","")
-        num = num.replace("\n", "")
-        return (num[1:].split(num[0]))
-    num = num.replace("\n",",")
-    return num.split(",")
- 
-def number_sum(n):
-    for i in range(0,len(n)):
-        n[i] = int(n[i])
-        if(n[i] >1000):
-            n[i] = 0
-    s = number_check(n)
-    return s
- 
-def number_check(a):
-    l = []
-    s = 0
-    sum = 0 
-    for i in range(0,len(a)): 
-        if(a[i] < 0):
-            l.append(a[i])
-            s = 1
-            continue
-        sum = sum + a[i]
-    return (num_neg(sum,s,l))
-def num_neg(sum,s,l):
-    if (s == 0):
-        return sum
-    else:
-        raise Exception ("Negative No not allowed " + str(l))
-        #print("Negative No not allowed " + str(l))
+import re 
+def add(var1): 
+    if var1 == "" or var1 == "0":
+        return 0
+    delimiter = delimiter_call(var1)
+    var2=numbers(var1,delimiter)
+    result=sumnumbers(var2)
+    return result
+def delimiter_call(var1):
+     if var1.startswith("//"):
+         return var1[2]
+     return ','
+def numbers(var1,delimiter):
+     if var1.startswith("//"):
+         return var1[4:].split(delimiter)
+     return re.split(rf"{re.escape(delimiter)}|\n", var1)
+def sumnumbers(var2):
+    return sum(parse_int(num) for num in var2 if valid_number(num))
+def parse_int(num_str):
+    try:
+        return int(num_str)
+    except ValueError:
+        return 0
+def valid_number(num_str):
+    try:
+        num=int(num_str)
+        return num<=1000
+    except ValueError:
+        return False
+
